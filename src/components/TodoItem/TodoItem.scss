@@ -1,0 +1,38 @@
+@import "../../conaints.scss";
+
+.item {
+  &__wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: $cardColor;
+    border-radius: 10px;
+    padding: 8px 12px;
+    margin-bottom: 24px;
+  }
+
+  &__chekbox {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-start;
+
+    p {
+      font-size: $text;
+      margin-right: 12px;
+    }
+  }
+}
+
+@media (max-width: 500px) {
+  .item__chekbox {
+    p {
+      font-size: $textmobile;
+    }
+  }
+}
+
+.donetask {
+  text-decoration: line-through;
+  background-color: rgb(175, 175, 175);
+}
