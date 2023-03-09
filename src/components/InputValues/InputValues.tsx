@@ -1,15 +1,9 @@
 import "./InputValues.scss"
 import { TextField, Button } from "@mui/material"
 import { TypeInputValues } from "../../types"
-import {
-  useEffect,
-  useRef,
-  useState
-} from "react"
+import { useEffect, useRef, useState } from "react"
 
-const InputValues: React.FC<
-  TypeInputValues
-> = props => {
+const InputValues: React.FC<TypeInputValues> = props => {
   const { todoItems, setTodoItems } = props
   const [title, setTitle] = useState("")
   const input = useRef<HTMLInputElement | null>(null)
@@ -33,10 +27,7 @@ const InputValues: React.FC<
           flag: false
         }
       ])
-      localStorage.setItem(
-        "todo",
-        JSON.stringify(todoItems)
-      )
+      localStorage.setItem("todo", JSON.stringify(todoItems))
       setTitle("")
     }
   }

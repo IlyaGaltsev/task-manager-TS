@@ -1,0 +1,54 @@
+// form {
+//   max-width: 600px;
+//   width: 100%;
+// }
+#normal_login {
+  max-width: 300px;
+  width: 100%;
+}
+
+#components-form-demo-normal-login .login-form {
+  max-width: 600px;
+  width: 100%;
+}
+#components-form-demo-normal-login .login-form-forgot {
+  float: right;
+}
+#components-form-demo-normal-login .ant-col-rtl .login-form-forgot {
+  float: left;
+}
+#components-form-demo-normal-login .login-form-button {
+  width: 100%;
+}
+
+.signin {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  height: 100vh;
+  // background-image: url("../../assets/naruto2.jpeg");
+  background-image: url("../../assets/image1.jpeg");
+  // background-image: url("../../assets/bleach1.jpeg");
+  // background-image: url("../../assets/bleach2.png");
+
+  background-size: cover;
+
+  &__wrapper {
+    width: 300px;
+    display: flex;
+    align-items: center;
+
+    border-top: 1px solid rgb(211, 211, 211);
+    border-left: 1px solid rgba(211, 211, 211, 0.4);
+    border-right: 1px solid rgba(211, 211, 211, 0.4);
+    justify-content: center;
+    backdrop-filter: blur(3px);
+    border-radius: 20px;
+    margin-left: 40px;
+    padding: 24px;
+  }
+
+  &__form {
+    max-width: 300px;
+  }
+}

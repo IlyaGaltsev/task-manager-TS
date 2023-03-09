@@ -1,50 +1,42 @@
-import React, { useState } from "react"
-import { InputValues } from "../components/InputValues"
-
+import React, { useContext, useLayoutEffect } from "react"
+import { useAuthState } from "react-firebase-hooks/auth"
+import { Route, Routes, useNavigate } from "react-router-dom"
+import { routes } from "../routes"
+import { Context } from ".."
+import { DESKTOP_SCREEN, SIGNIN_ROUTE } from "../const"
+import { ThemeProvider, createTheme } from "@mui/material/styles"
 import "./App.scss"
-import { ITodoItem } from "../types"
-import { TodoList } from "../components/TodoList"
-import { useEffect } from "react"
 
 const App: React.FC = () => {
-  let startMass = JSON.parse(
-    localStorage.getItem("todo") || "[ ]"
-  )
+  const navigate = useNavigate()
+  const { auth } = useContext(Context)
+  const [user, loading] = useAuthState(auth)
 
-  const [todoItems, setTodoItems] = useState<ITodoItem[]>(startMass)
+  useLayoutEffect(() => {
+    user ? navigate(DESKTOP_SCREEN) : navigate(SIGNIN_ROUTE)
 
-  const deleteItem = (id: number): void => {
-    setTodoItems(
-      todoItems.filter(item => item.id !== id)
-    )
-  }
-  const toggleItem = (id: number): void => {
-    setTodoItems(
-      todoItems.map(item => {
-        if (item.id !== id) return item
-        return { ...item, flag: !item.flag }
-      })
-    )
-  }
-  useEffect(() => {
-    localStorage.setItem(
-      "todo",
-      JSON.stringify(todoItems)
-    )
-  }, [todoItems])
-  
+    console.log("user:", user)
+  }, [user])
+
+  const darkTheme = createTheme({
+    palette: {
+      mode: "dark"
+    }
+  })
   return (
-    <div className="app_wrapper">
-      <InputValues
-        todoItems={todoItems}
-        setTodoItems={setTodoItems}
-      />
-      <TodoList
-        deleteItem={deleteItem}
-        toggleItem={toggleItem}
-        todoItems={todoItems}
-      />
-    </div>
+    <ThemeProvider theme={darkTheme}>
+      <Routes>
+        {routes.map(({ path, Component }) => {
+          return (
+            <Route
+              key={path}
+              path={path}
+              element={Component}
+            />
+          )
+        })}
+      </Routes>
+    </ThemeProvider>
   )
 }
 
