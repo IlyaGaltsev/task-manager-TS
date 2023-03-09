@@ -14,6 +14,8 @@ import ListItemAvatar from "@mui/material/ListItemAvatar"
 import ListItemText from "@mui/material/ListItemText"
 import ListSubheader from "@mui/material/ListSubheader"
 import Avatar from "@mui/material/Avatar"
+// import firebase from "firebase/app"
+
 import {
   TiLockClosed,
   TiMicrophone,
@@ -104,13 +106,17 @@ const Desktop = () => {
   }
 
   const logout = () => {
+    // console.log('logout')
     firebase
       .auth()
       .signOut()
       .then((data: any) => {
+        console.log(data)
         // Sign-out successful.
       })
       .catch((error: any) => {
+        console.log(error)
+
         // An error happened.
       })
   }

@@ -1,9 +1,15 @@
-import { LockOutlined, UserOutlined } from "@ant-design/icons"
-import { Button, Checkbox, Form, Input } from "antd"
-import { createUserWithEmailAndPassword, UserCredential } from "firebase/auth"
-import { useContext, useState } from "react"
+// import { LockOutlined, UserOutlined } from "@ant-design/icons"
+// import { Button, Form, Input } from "antd"
+// import { createUserWithEmailAndPassword, UserCredential } from "firebase/auth"
+// import { signInWithEmailAndPassword } from "firebase/auth"
+import React from "react"
+import { Form, Input, Button } from "antd"
+import type { FormItemProps } from "antd"
+import { Link } from "react-router-dom"
+import { useContext } from "react"
 import "./SignUp.scss"
 import { Context } from "../.."
+import { getDatabase, ref, set } from "firebase/database"
 
 interface IFirebaseContext {
   firebase: any
@@ -14,25 +20,73 @@ interface ICreateUserData {
   email: String
   password: String
 }
-const SignUp: React.FC = () => {
-  const { auth, firebase, firestore } = useContext<IFirebaseContext>(Context)
-  const [email, setEmail] = useState<any>("sdhf@sdf.ru")
-  const [password, setPassword] = useState<any>("sd1231")
+const MyFormItemContext = React.createContext<(string | number)[]>([])
 
-  const signup = () => {
-    // firebase
-    //   .database()
-    //   .ref("usersChat/" + user._user.uid)
-    //   .set({
-    //     nickname: "lox",
-    //     uid: user._user.uid,
-    //     timestamp: Date.now(),
-    //     email: email
-    //   })
+interface MyFormItemGroupProps {
+  prefix: string | number | (string | number)[]
+  children: React.ReactNode
+}
+
+function toArr(
+  str: string | number | (string | number)[]
+): (string | number)[] {
+  return Array.isArray(str) ? str : [str]
+}
+
+const MyFormItemGroup = ({ prefix, children }: MyFormItemGroupProps) => {
+  const prefixPath = React.useContext(MyFormItemContext)
+  const concatPath = React.useMemo(
+    () => [...prefixPath, ...toArr(prefix)],
+    [prefixPath, prefix]
+  )
+
+  return (
+    <MyFormItemContext.Provider value={concatPath}>
+      {children}
+    </MyFormItemContext.Provider>
+  )
+}
+
+const MyFormItem = ({ name, ...props }: FormItemProps) => {
+  const prefixPath = React.useContext(MyFormItemContext)
+  const concatName =
+    name !== undefined ? [...prefixPath, ...toArr(name)] : undefined
+
+  return (
+    <Form.Item
+      name={concatName}
+      {...props}
+    />
+  )
+}
+var firebase = require("firebase/app")
+require("firebase/database")
+
+const SignUp: React.FC = () => {
+  const { auth } = useContext<IFirebaseContext>(Context)
+
+  const onFinish = ({ user }: any) => {
+    console.log(user)
     auth
-      .createUserWithEmailAndPassword(email, password)
-      .then((auth: any) => {
-        console.log(auth)
+      .createUserWithEmailAndPassword(user.email, user.passowrd)
+      .then((data: any) => {
+        // set failed: value argument contains undefined in property 'userTasks.undefined.uid'
+        // console.log(user)
+        // firebase
+        //   .database()
+        //   .ref("users/" + user.userId)
+        //   .set({
+        // /
+        //     // profile_picture : imageUrl,
+        //     tasks: []
+        //   })
+        // console.log(data.user.email)
+        const db = getDatabase()
+        set(ref(db, "userTasks/" + data.user.uid), {
+          uid: data.user.uid,
+          email: data.user.email,
+          tasks: []
+        })
       })
       .catch((error: any) => {
         let errorCode = error.code
@@ -47,45 +101,36 @@ const SignUp: React.FC = () => {
       })
   }
 
-  // const registerUserWithEmailAndPassword = (
-  //   nickname: any,
-  //   email: any,
-  //   password: any
-  // ) => {
-  //   return dispatch => {
-  //     firebase
-  //       .auth()
-  //       .createUserWithEmailAndPassword(email, password)
-  //       .then(user => {
-  //         firebase
-  //           .database()
-  //           .ref("usersChat/" + user._user.uid)
-  //           .set({
-  //             nickname: nickname,
-  //             uid: user._user.uid,
-  //             timestamp: Date.now(),
-  //             email: email
-  //           })
-  //         return user
-  //       })
-
-  //       .catch(error => {
-  //         // Handle Errors here.
-  //         var errorCode = error.code
-  //         var errorMessage = error.message
-  //         dispatch({
-  //           type: types.userRegisterErr,
-  //           payload: errorMessage
-  //         })
-  //       })
-  //   }
-  // }
-
   return (
-    <div className="signup">
-      <div className="signup__wrapper">SIGN_UP</div>
-      <Button onClick={signup}>signup</Button>
-    </div>
+    <Form
+      name="form_item_path"
+      layout="vertical"
+      onFinish={onFinish}
+    >
+      <MyFormItemGroup prefix={["user"]}>
+        <MyFormItem
+          name="email"
+          label="email"
+        >
+          <Input />
+        </MyFormItem>
+
+        <MyFormItem
+          name="passowrd"
+          label="passowrd"
+        >
+          <Input />
+        </MyFormItem>
+      </MyFormItemGroup>
+
+      <Button
+        type="primary"
+        htmlType="submit"
+      >
+        Create user
+      </Button>
+      <Link to={"/signin"}>on create account</Link>
+    </Form>
   )
 }
 
