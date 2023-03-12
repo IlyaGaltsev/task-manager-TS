@@ -31,15 +31,21 @@ const SignUp: React.FC = () => {
       .then(() => {
         window.location.search = `?displayName=${displayName}`
       })
-      .catch((error: any) => {
-        let errorMessage = error.message
-
-        if (errorMessage === "auth/weak-password") {
-          alert("The password is too weak.")
-        } else {
-          alert(errorMessage)
+      .catch((err: any) => {
+        let jsonError = JSON.stringify(err)
+        const code = JSON.parse(jsonError).code
+        console.log(code)
+        if (code.includes("requests")) {
+          setError("email", {
+            message: "Too many login attempts"
+          })
         }
-        console.log(error)
+
+        if (code.includes("use")) {
+          setError("email", {
+            message: "Email already in use"
+          })
+        }
       })
   }
 
