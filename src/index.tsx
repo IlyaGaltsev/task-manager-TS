@@ -29,11 +29,11 @@ const defaultState = {
 export const Context = createContext<IFirebaseContext>(defaultState)
 
 root.render(
-  <>
+  <React.StrictMode>
     <Context.Provider value={{ firebase, auth, firestore }}>
       <Router>
         <App />
       </Router>
     </Context.Provider>
-  </>
+  </React.StrictMode>
 )
