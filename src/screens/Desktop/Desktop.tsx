@@ -1,4 +1,5 @@
 import * as React from "react"
+import { useCollectionData } from "react-firebase-hooks/firestore"
 import { styled } from "@mui/material/styles"
 import AppBar from "@mui/material/AppBar"
 import Box from "@mui/material/Box"
@@ -15,6 +16,7 @@ import ListItemText from "@mui/material/ListItemText"
 import ListSubheader from "@mui/material/ListSubheader"
 import Avatar from "@mui/material/Avatar"
 // import firebase from "firebase/app"
+import { getDatabase, ref, set, get } from "firebase/database"
 
 import {
   TiLockClosed,
@@ -25,6 +27,7 @@ import {
 } from "react-icons/ti"
 import { AlertDialog } from "../../components/AlertDialog"
 import { Context } from "../.."
+import { useParams } from "react-router-dom"
 
 const messages = [
   {
@@ -93,9 +96,37 @@ interface IFirebaseContext {
 }
 
 const Desktop = () => {
-  const { firebase } = React.useContext<IFirebaseContext>(Context)
+  // let { id } = useParams();
+  // console.log(id)
+  const getParamsDisplayName = () => {
+    var params = window.location.search.substring(1).split("&")
+    var result
+    for (let i = 0; i < params.length; i++) {
+      if (params[i].split("=")[0] == "displayName") {
+        result = params[i].split("=")[1]
+        break
+      }
+    }
+    console.log(result)
+    return result
+  }
+  const displayName = getParamsDisplayName()
 
-  const [open, setOpen] = React.useState(false)
+  const { firebase, firestore } = React.useContext<IFirebaseContext>(Context)
+  const [messages2, loading] = useCollectionData<any>(
+    firestore.collection(`userTasks`)
+    // .orderBy("created")
+  )
+  // firestore.collection("userTasks").add({
+  //   uid: user.uid,
+  //   displayName: user.displayName,
+  //   photoUrl: user.photoURL,
+  //   text: value,
+  //   created:
+  //     firebase.firestore.FieldValue.serverTimestamp()
+  // })
+
+  const [open, setOpen] = React.useState(displayName ? true : false)
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -182,7 +213,6 @@ const Desktop = () => {
           <StyledFab
             color="secondary"
             aria-label="add"
-            onClick={handleClickOpen}
           >
             <TiPlus />
           </StyledFab>
@@ -198,12 +228,15 @@ const Desktop = () => {
           </IconButton>
         </Toolbar>
       </AppBar>
-      <AlertDialog
-        open={open}
-        setOpen={setOpen}
-        handleClose={handleClose}
-        handleClickOpen={handleClickOpen}
-      />
+      {displayName && (
+        <AlertDialog
+          displayName={displayName}
+          open={open}
+          setOpen={setOpen}
+          handleClose={handleClose}
+          handleClickOpen={handleClickOpen}
+        />
+      )}
     </React.Fragment>
   )
 }

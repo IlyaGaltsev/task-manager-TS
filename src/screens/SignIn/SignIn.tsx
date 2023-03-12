@@ -1,96 +1,77 @@
 import { signInWithEmailAndPassword } from "firebase/auth"
+import * as P from "../../styled/PublicComponents.styled"
+import { FieldValues, useForm } from "react-hook-form"
+import { Button, TextField } from "@mui/material"
+import { signInFileds } from "../../utils/fileds"
+import { SIGNUP_ROUTE } from "../../const"
+import { IFileds } from "../../types"
 import { useContext } from "react"
 import { Context } from "../.."
-import "./SignIn.scss"
-import React from "react"
-import { Form, Input, Button } from "antd"
-import type { FormItemProps } from "antd"
-import { Link } from "react-router-dom"
-
-const MyFormItemContext = React.createContext<(string | number)[]>([])
-
-interface MyFormItemGroupProps {
-  prefix: string | number | (string | number)[]
-  children: React.ReactNode
-}
-
-function toArr(
-  str: string | number | (string | number)[]
-): (string | number)[] {
-  return Array.isArray(str) ? str : [str]
-}
-
-const MyFormItemGroup = ({ prefix, children }: MyFormItemGroupProps) => {
-  const prefixPath = React.useContext(MyFormItemContext)
-  const concatPath = React.useMemo(
-    () => [...prefixPath, ...toArr(prefix)],
-    [prefixPath, prefix]
-  )
-
-  return (
-    <MyFormItemContext.Provider value={concatPath}>
-      {children}
-    </MyFormItemContext.Provider>
-  )
-}
-
-const MyFormItem = ({ name, ...props }: FormItemProps) => {
-  const prefixPath = React.useContext(MyFormItemContext)
-  const concatName =
-    name !== undefined ? [...prefixPath, ...toArr(name)] : undefined
-
-  return (
-    <Form.Item
-      name={concatName}
-      {...props}
-    />
-  )
-}
 
 const SignIn: React.FC = () => {
   const { auth } = useContext(Context)
+  const {
+    register,
+    formState: { errors },
+    setError,
+    handleSubmit
+  } = useForm()
 
-  const onFinish = ({user}: any) => {
-    console.log(user)
-    signInWithEmailAndPassword(auth, user.email, user.passowrd)
-      .then(res => console.log(res))
-      .catch(error => {
-        console.log("error-signin", { error })
-      })
+  const signIn = (data: FieldValues) => {
+    signInWithEmailAndPassword(auth, data.email, data.password).catch(err => {
+      let jsonError = JSON.stringify(err)
+      const code = JSON.parse(jsonError).code
+
+      if (code.includes("password")) {
+        setError("password", {
+          message: "Incorrect password"
+        })
+      }
+
+      if (code.includes("requests")) {
+        setError("email", {
+          message: "Too many login attempts"
+        })
+      }
+
+      if (code.includes("found")) {
+        setError("email", {
+          message: "Not found this user"
+        })
+      }
+    })
   }
 
   return (
-    <Form
-      name="form_item_path"
-      layout="vertical"
-      onFinish={onFinish}
-    >
-      <MyFormItemGroup prefix={["user"]}>
-        <MyFormItem
-          name="email"
-          label="email"
-        >
-          <Input />
-        </MyFormItem>
-
-        <MyFormItem
-          name="passowrd"
-          label="passowrd"
-        >
-          <Input />
-        </MyFormItem>
-      </MyFormItemGroup>
-
+    <P.Form onSubmit={handleSubmit(signIn)}>
+      <P.Title style={{ marginBottom: 4 }}>Sign In</P.Title>
+      <P.SubTitle style={{ marginBottom: 16 }}>Sign in your account</P.SubTitle>
+      {signInFileds.map(({ name, placeholder, type, options }: IFileds) => {
+        return (
+          <TextField
+            key={name}
+            error={Boolean(errors[name])}
+            placeholder={placeholder}
+            type={type}
+            style={{ marginBottom: 12 }}
+            helperText={errors[name]?.message?.toString()}
+            {...register(name, options)}
+          />
+        )
+      })}
       <Button
-        type="primary"
-        htmlType="submit"
+        style={{ marginTop: 8, marginBottom: 20 }}
+        type="submit"
+        variant="contained"
+        color="primary"
       >
-        Submit
+        Sign In
       </Button>
-      <Link to={'/signup'}>
-        on create account
-      </Link>
-    </Form>
+      <P.SubTitle>
+        Don't have an account?{" "}
+        <P.RouteLink to={SIGNUP_ROUTE}>Create account</P.RouteLink>
+      </P.SubTitle>
+    </P.Form>
   )
 }
 

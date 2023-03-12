@@ -4,9 +4,14 @@ import Dialog from "@mui/material/Dialog"
 import DialogActions from "@mui/material/DialogActions"
 import DialogContent from "@mui/material/DialogContent"
 import DialogContentText from "@mui/material/DialogContentText"
-import DialogTitle from "@mui/material/DialogTitle"
 import Slide from "@mui/material/Slide"
 import { TransitionProps } from "@mui/material/transitions"
+import { Avatar } from "@mui/material"
+import { deepOrange } from "@mui/material/colors"
+import * as S from "./AlertDialog.styled"
+import * as P from "../../styled/PublicComponents.styled"
+import { updateProfile } from "firebase/auth"
+import { Context } from "../.."
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -23,25 +28,94 @@ const Transition = React.forwardRef(function Transition(
   )
 })
 
-const AlertDialog = ({ open, setOpen, handleClickOpen, handleClose }: any) => {
+const AlertDialog = ({
+  open,
+  setOpen,
+  handleClickOpen,
+  handleClose,
+  displayName
+}: any) => {
+  // const navigate = useNavigate()
+  const { auth } = React.useContext(Context)
+
+  // const setFileImage = () => {
+  //   console.log(file)
+  //   const storageRef = ref(storage, user.displayName)
+  //   const uploadTask = uploadBytesResumable(storageRef, file)
+
+  //   uploadTask.on(
+  //     error => {
+  //       alert(error)
+  //     },
+  //     () => {
+  //       getDownloadURL(uploadTask.snapshot.ref)
+  //         .then(async donwloadUrl => await updateImage(donwloadUrl))
+  //         .catch(error => alert(error))
+  //     }
+  //   )
+  // }
+
+  // const updateImage = (name: string) => {
+  //   updateProfile(auth.currentUser, {
+  //     photoURL: name
+  //   })
+  // }
+
+  const updateDisplayName = (name: string) => {
+    try {
+      updateProfile(auth.currentUser, {
+        displayName: name
+      })
+      window.location.search = ""
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  const updateUser = () => {
+    updateDisplayName(displayName)
+    handleClose()
+  }
+
   return (
     <Dialog
       open={open}
       TransitionComponent={Transition}
       keepMounted
-      onClose={handleClose}
+      onClose={updateUser}
       aria-describedby="alert-dialog-slide-description"
     >
-      <DialogTitle>{"Use Google's location service?"}</DialogTitle>
       <DialogContent>
+        <S.ModalTitle style={{ marginBottom: 12 }}>
+          <Avatar
+            sx={{ bgcolor: deepOrange[500] }}
+            alt="Remy Sharp"
+          >
+            {displayName[0].toUpperCase()}
+          </Avatar>
+          <h2 style={{ margin: 0, padding: 0, marginLeft: 12 }}>
+            Hi {displayName}!
+          </h2>
+        </S.ModalTitle>
         <DialogContentText id="alert-dialog-slide-description">
-          Let Google help apps determine location. This means sending anonymous
-          location data to Google, even when no apps are running.
+          Here you can record tasks and view them from any device. Now choose a
+          photo and complete the registration!
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={handleClose}>Disagree</Button>
-        <Button onClick={handleClose}>Agree</Button>
+        <Button
+          variant="outlined"
+          onClick={updateUser}
+        >
+          skip
+        </Button>
+        <S.FileButton variant="contained">
+          <input
+            accept="image/*"
+            type="file"
+          />
+          Set avatar
+        </S.FileButton>
       </DialogActions>
     </Dialog>
   )

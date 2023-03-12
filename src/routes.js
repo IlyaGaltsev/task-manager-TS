@@ -1,19 +1,32 @@
+import { Desktop } from "./screens/Desktop"
 import { SignIn } from "./screens/SignIn"
 import { SignUp } from "./screens/SignUp"
-import { SIGNIN_ROUTE, DESKTOP_SCREEN, SIGNUP_ROUTE } from "./const"
-import { Desktop } from "./screens/Desktop"
+import * as routesNames from "./const"
 
-export const routes = [
+export const publicRoutes = [
   {
-    path: SIGNIN_ROUTE,
+    path: routesNames.SIGNIN_ROUTE,
     Component: <SignIn />
   },
   {
-    path: SIGNUP_ROUTE,
+    path: routesNames.SIGNUP_ROUTE,
     Component: <SignUp />
   },
+  
   {
-    path: DESKTOP_SCREEN,
+    path: '*',
+    Component: <SignIn />
+  },
+
+]
+
+export const privateRoutes = [
+  {
+    path: routesNames.DESKTOP_SCREEN,
     Component: <Desktop />
-  }
+  },
+  {
+    path: '*',
+    Component: <Desktop />
+  },
 ]
