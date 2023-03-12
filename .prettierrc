@@ -4,9 +4,10 @@
   "useTabs": false,
   "semi": false,
   "arrowParens": "avoid",
-  "printWidth": 50,
+  "printWidth": 80,
   "prettier.disableLanguages": ["javascript", "javascriptreact"],
   "[html]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
-  }
+  },
+  "singleAttributePerLine": true
 }

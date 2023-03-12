@@ -18,7 +18,12 @@ export interface ITodoItemCard extends ITodoItem {
 }
 export interface TypeInputValues {
   todoItems: ITodoItem[]
-  setTodoItems: Dispatch<
-    SetStateAction<ITodoItem[]>
-  >
+  setTodoItems: Dispatch<SetStateAction<ITodoItem[]>>
+}
+
+export interface IFileds {
+  name: string
+  placeholder: string
+  type?: string
+  options: object
 }

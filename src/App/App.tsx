@@ -1,51 +1,51 @@
-import React, { useState } from "react"
-import { InputValues } from "../components/InputValues"
-
+import React, { useContext, useLayoutEffect } from "react"
+import { useAuthState } from "react-firebase-hooks/auth"
+import { Route, Routes, useNavigate } from "react-router-dom"
+import { privateRoutes, publicRoutes } from "../routes"
+import { Context } from ".."
+import { DESKTOP_SCREEN, SIGNIN_ROUTE } from "../const"
+import { ThemeProvider, createTheme } from "@mui/material/styles"
 import "./App.scss"
-import { ITodoItem } from "../types"
-import { TodoList } from "../components/TodoList"
-import { useEffect } from "react"
 
 const App: React.FC = () => {
-  let startMass = JSON.parse(
-    localStorage.getItem("todo") || "[ ]"
-  )
+  const navigate = useNavigate()
+  const { auth } = useContext(Context)
+  const [user, loading] = useAuthState(auth)
 
-  const [todoItems, setTodoItems] = useState<ITodoItem[]>(startMass)
 
-  const deleteItem = (id: number): void => {
-    setTodoItems(
-      todoItems.filter(item => item.id !== id)
+  useLayoutEffect(() => {
+    // user ? navigate(DESKTOP_SCREEN) : navigate(SIGNIN_ROUTE)
+
+    console.log("user:", user)
+  }, [user])
+
+  if (loading) {
+    return <p>LOADING...</p>
+  } else {
+    return (
+      <Routes>
+        {user
+          ? privateRoutes.map(({ path, Component }) => {
+              return (
+                <Route
+                  key={path}
+                  path={path}
+                  element={Component}
+                />
+              )
+            })
+          : publicRoutes.map(({ path, Component }) => {
+              return (
+                <Route
+                  key={path}
+                  path={path}
+                  element={Component}
+                />
+              )
+            })}
+      </Routes>
     )
   }
-  const toggleItem = (id: number): void => {
-    setTodoItems(
-      todoItems.map(item => {
-        if (item.id !== id) return item
-        return { ...item, flag: !item.flag }
-      })
-    )
-  }
-  useEffect(() => {
-    localStorage.setItem(
-      "todo",
-      JSON.stringify(todoItems)
-    )
-  }, [todoItems])
-  
-  return (
-    <div className="app_wrapper">
-      <InputValues
-        todoItems={todoItems}
-        setTodoItems={setTodoItems}
-      />
-      <TodoList
-        deleteItem={deleteItem}
-        toggleItem={toggleItem}
-        todoItems={todoItems}
-      />
-    </div>
-  )
 }
 
 export { App }
