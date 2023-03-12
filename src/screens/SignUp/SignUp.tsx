@@ -1,4 +1,3 @@
-// import { getDatabase, ref, set } from "firebase/database"
 import { createUserWithEmailAndPassword } from "firebase/auth"
 import * as P from "../../styled/PublicComponents.styled"
 import { FieldValues, useForm } from "react-hook-form"
@@ -8,7 +7,6 @@ import { SIGNIN_ROUTE } from "../../const"
 import { IFileds } from "../../types"
 import { useContext } from "react"
 import { Context } from "../.."
-import { useNavigate } from "react-router-dom"
 
 interface IFirebaseContext {
   firebase: any
@@ -32,25 +30,6 @@ const SignUp: React.FC = () => {
     createUserWithEmailAndPassword(auth, email, password)
       .then(() => {
         window.location.search = `?displayName=${displayName}`
-        // user есть? =>
-        // navigate(`/${displayName}`)
-        // set failed: value argument contains undefined in property 'userTasks.undefined.uid'
-        // console.log(user)
-        // firebase
-        //   .database()
-        //   .ref("users/" + user.userId)
-        //   .set({
-        // /
-        //     // profile_picture : imageUrl,
-        //     tasks: []
-        //   })
-        // console.log(data.user.email)
-        // const db = getDatabase()
-        // set(ref(db, "userTasks/" + data.user.uid), {
-        //   uid: data.user.uid,
-        //   email: data.user.email,
-        //   tasks: []
-        // })
       })
       .catch((error: any) => {
         let errorMessage = error.message

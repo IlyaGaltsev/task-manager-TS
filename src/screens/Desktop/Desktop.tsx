@@ -1,33 +1,29 @@
-import * as React from "react"
-import { useCollectionData } from "react-firebase-hooks/firestore"
-import { styled } from "@mui/material/styles"
-import AppBar from "@mui/material/AppBar"
-import Box from "@mui/material/Box"
-import CssBaseline from "@mui/material/CssBaseline"
-import Toolbar from "@mui/material/Toolbar"
-import Typography from "@mui/material/Typography"
-import IconButton from "@mui/material/IconButton"
-import Paper from "@mui/material/Paper"
-import Fab from "@mui/material/Fab"
-import List from "@mui/material/List"
-import ListItem from "@mui/material/ListItem"
-import ListItemAvatar from "@mui/material/ListItemAvatar"
-import ListItemText from "@mui/material/ListItemText"
-import ListSubheader from "@mui/material/ListSubheader"
-import Avatar from "@mui/material/Avatar"
-// import firebase from "firebase/app"
-import { getDatabase, ref, set, get } from "firebase/database"
-
-import {
-  TiLockClosed,
-  TiMicrophone,
-  TiPlus,
-  TiSocialVimeoCircular,
-  TiThMenu
-} from "react-icons/ti"
 import { AlertDialog } from "../../components/AlertDialog"
+import { styled } from "@mui/material/styles"
+import { useContext, useState } from "react"
 import { Context } from "../.."
-import { useParams } from "react-router-dom"
+import {
+  ListItemAvatar,
+  ListSubheader,
+  ListItemText,
+  CssBaseline,
+  Typography,
+  IconButton,
+  ListItem,
+  Toolbar,
+  AppBar,
+  Avatar,
+  Paper,
+  List,
+  Box,
+  Fab
+} from "@mui/material"
+import {
+  TiSocialVimeoCircular,
+  TiLockClosed,
+  TiThMenu,
+  TiPlus
+} from "react-icons/ti"
 
 const messages = [
   {
@@ -96,13 +92,11 @@ interface IFirebaseContext {
 }
 
 const Desktop = () => {
-  // let { id } = useParams();
-  // console.log(id)
   const getParamsDisplayName = () => {
     var params = window.location.search.substring(1).split("&")
     var result
     for (let i = 0; i < params.length; i++) {
-      if (params[i].split("=")[0] == "displayName") {
+      if (params[i].split("=")[0] === "displayName") {
         result = params[i].split("=")[1]
         break
       }
@@ -110,23 +104,11 @@ const Desktop = () => {
     console.log(result)
     return result
   }
+
   const displayName = getParamsDisplayName()
 
-  const { firebase, firestore } = React.useContext<IFirebaseContext>(Context)
-  const [messages2, loading] = useCollectionData<any>(
-    firestore.collection(`userTasks`)
-    // .orderBy("created")
-  )
-  // firestore.collection("userTasks").add({
-  //   uid: user.uid,
-  //   displayName: user.displayName,
-  //   photoUrl: user.photoURL,
-  //   text: value,
-  //   created:
-  //     firebase.firestore.FieldValue.serverTimestamp()
-  // })
-
-  const [open, setOpen] = React.useState(displayName ? true : false)
+  const { firebase } = useContext<IFirebaseContext>(Context)
+  const [open, setOpen] = useState(displayName ? true : false)
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -137,23 +119,19 @@ const Desktop = () => {
   }
 
   const logout = () => {
-    // console.log('logout')
     firebase
       .auth()
       .signOut()
       .then((data: any) => {
         console.log(data)
-        // Sign-out successful.
       })
       .catch((error: any) => {
         console.log(error)
-
-        // An error happened.
       })
   }
 
   return (
-    <React.Fragment>
+    <>
       <CssBaseline />
       <Paper
         square
@@ -169,7 +147,7 @@ const Desktop = () => {
         </Typography>
         <List sx={{ mb: 2 }}>
           {messages.map(({ id, primary, secondary, person }) => (
-            <React.Fragment key={id}>
+            <>
               {id === 1 && (
                 <ListSubheader sx={{ bgcolor: "background.paper" }}>
                   Today
@@ -194,7 +172,7 @@ const Desktop = () => {
                   secondary={secondary}
                 />
               </ListItem>
-            </React.Fragment>
+            </>
           ))}
         </List>
       </Paper>
@@ -237,7 +215,7 @@ const Desktop = () => {
           handleClickOpen={handleClickOpen}
         />
       )}
-    </React.Fragment>
+    </>
   )
 }
 export { Desktop }
