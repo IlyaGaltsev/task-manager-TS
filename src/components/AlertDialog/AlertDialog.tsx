@@ -1,19 +1,19 @@
-import * as React from "react"
-import Button from "@mui/material/Button"
-import Dialog from "@mui/material/Dialog"
-import DialogActions from "@mui/material/DialogActions"
-import DialogContent from "@mui/material/DialogContent"
-import DialogContentText from "@mui/material/DialogContentText"
-import Slide from "@mui/material/Slide"
-import { TransitionProps } from "@mui/material/transitions"
-import { Avatar } from "@mui/material"
-import { deepOrange } from "@mui/material/colors"
-import * as S from "./AlertDialog.styled"
-import * as P from "../../styled/PublicComponents.styled"
-import { updateProfile } from "firebase/auth"
-import { Context } from "../.."
+import * as React from 'react'
+import Button from '@mui/material/Button'
+import Dialog from '@mui/material/Dialog'
+import DialogActions from '@mui/material/DialogActions'
+import DialogContent from '@mui/material/DialogContent'
+import DialogContentText from '@mui/material/DialogContentText'
+import Slide from '@mui/material/Slide'
+import { type TransitionProps } from '@mui/material/transitions'
+import { Alert, Avatar } from '@mui/material'
+import { deepOrange } from '@mui/material/colors'
+import * as S from './AlertDialog.styled'
+// import * as P from '../../styled/PublicComponents.styled'
+import { updateProfile } from 'firebase/auth'
+import { Context } from '../..'
 
-const Transition = React.forwardRef(function Transition(
+const Transition = React.forwardRef(function Transition (
   props: TransitionProps & {
     children: React.ReactElement<any, any>
   },
@@ -62,14 +62,11 @@ const AlertDialog = ({
   // }
 
   const updateDisplayName = (name: string) => {
-    try {
-      updateProfile(auth.currentUser, {
-        displayName: name
-      })
-      window.location.search = ""
-    } catch (e) {
-      console.log(e)
-    }
+    updateProfile(auth.currentUser, {
+      displayName: name
+    }).then(() => {
+      window.location.search = ''
+    }).catch((e) => Alert(e))
   }
 
   const updateUser = () => {
