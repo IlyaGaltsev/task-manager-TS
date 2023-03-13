@@ -1,7 +1,7 @@
 import { Desktop } from './screens/Desktop'
 import { SignIn } from './screens/SignIn'
 import { SignUp } from './screens/SignUp'
-import * as routesNames from './const'
+import * as routesNames from './utils/const'
 
 export const publicRoutes = [
   {

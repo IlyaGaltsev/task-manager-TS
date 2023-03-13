@@ -1,5 +1,5 @@
-import { FirebaseContext } from '../../context/FirebaseContext'
-import { AlertDialog } from '../../components/AlertDialog'
+import { FirebaseContext } from 'context/FirebaseContext'
+import { AlertDialog } from 'components/AlertDialog'
 import { styled } from '@mui/material/styles'
 import { useContext, useState } from 'react'
 import {

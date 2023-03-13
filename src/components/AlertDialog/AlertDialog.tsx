@@ -10,7 +10,7 @@ import { deepOrange } from '@mui/material/colors'
 import * as S from './AlertDialog.styled'
 // import * as P from '../../styled/PublicComponents.styled'
 import { updateProfile } from 'firebase/auth'
-import { FirebaseContext } from '../../context/FirebaseContext'
+import { FirebaseContext } from 'context/FirebaseContext'
 import React, { useContext } from 'react'
 
 const Transition = React.forwardRef(function Transition (

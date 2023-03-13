@@ -1,4 +1,4 @@
-import { type IFileds } from '../types'
+import { type IFileds } from './types'
 
 export const signInFileds: IFileds[] = [
   {

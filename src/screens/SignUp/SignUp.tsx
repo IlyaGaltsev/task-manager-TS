@@ -1,11 +1,11 @@
-import { FirebaseContext } from '../../context/FirebaseContext'
+import { FirebaseContext } from 'context/FirebaseContext'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
-import type { IFirebaseContext, IFileds } from '../../types'
+import type { IFirebaseContext, IFileds } from 'utils/types'
 import { type FieldValues, useForm } from 'react-hook-form'
-import * as P from '../../styled/PublicComponents.styled'
+import * as P from 'styled/PublicComponents.styled'
 import { Button, TextField } from '@mui/material'
-import { signUpFileds } from '../../utils/fileds'
-import { SIGNIN_ROUTE } from '../../const'
+import { signUpFileds } from 'utils/fileds'
+import { SIGNIN_ROUTE } from 'utils/const'
 import { type FC, useContext } from 'react'
 
 const SignUp: FC = () => {
