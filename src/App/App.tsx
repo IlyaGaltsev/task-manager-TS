@@ -1,12 +1,11 @@
+import { FirebaseContext } from '../context/FirebaseContext'
 import React, { useContext, useLayoutEffect } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { privateRoutes, publicRoutes } from '../routes'
 import { Route, Routes } from 'react-router-dom'
-import { Context } from '..'
-import './App.scss'
 
 const App: React.FC = () => {
-  const { auth } = useContext(Context)
+  const { auth } = useContext(FirebaseContext)
   const [user, loading] = useAuthState(auth)
 
   useLayoutEffect(() => {

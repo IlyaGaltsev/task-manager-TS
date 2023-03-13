@@ -1,4 +1,3 @@
-import * as React from 'react'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
 import DialogActions from '@mui/material/DialogActions'
@@ -11,7 +10,8 @@ import { deepOrange } from '@mui/material/colors'
 import * as S from './AlertDialog.styled'
 // import * as P from '../../styled/PublicComponents.styled'
 import { updateProfile } from 'firebase/auth'
-import { Context } from '../..'
+import { FirebaseContext } from '../../context/FirebaseContext'
+import React, { useContext } from 'react'
 
 const Transition = React.forwardRef(function Transition (
   props: TransitionProps & {
@@ -35,8 +35,7 @@ const AlertDialog = ({
   handleClose,
   displayName
 }: any) => {
-  // const navigate = useNavigate()
-  const { auth } = React.useContext(Context)
+  const { auth } = useContext(FirebaseContext)
 
   // const setFileImage = () => {
   //   console.log(file)
