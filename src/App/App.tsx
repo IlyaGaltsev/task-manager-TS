@@ -3,6 +3,7 @@ import React, { useContext, useLayoutEffect } from 'react'
 import { useAuthState } from 'react-firebase-hooks/auth'
 import { privateRoutes, publicRoutes } from '../routes'
 import { Route, Routes } from 'react-router-dom'
+import { Loader } from '../components/Loader'
 
 const App: React.FC = () => {
   const { auth } = useContext(FirebaseContext)
@@ -13,7 +14,7 @@ const App: React.FC = () => {
   }, [user])
 
   if (loading) {
-    return <p>LOADING...</p>
+    return <Loader/>
   } else {
     return (
       <Routes>
