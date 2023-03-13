@@ -1,7 +1,7 @@
-import { Desktop } from "./screens/Desktop"
-import { SignIn } from "./screens/SignIn"
-import { SignUp } from "./screens/SignUp"
-import * as routesNames from "./const"
+import { Desktop } from './screens/Desktop'
+import { SignIn } from './screens/SignIn'
+import { SignUp } from './screens/SignUp'
+import * as routesNames from './const'
 
 export const publicRoutes = [
   {
@@ -12,11 +12,11 @@ export const publicRoutes = [
     path: routesNames.SIGNUP_ROUTE,
     Component: <SignUp />
   },
-  
+
   {
     path: '*',
     Component: <SignIn />
-  },
+  }
 
 ]
 
@@ -28,5 +28,5 @@ export const privateRoutes = [
   {
     path: '*',
     Component: <Desktop />
-  },
+  }
 ]

@@ -1,12 +1,12 @@
-import { createUserWithEmailAndPassword } from "firebase/auth"
-import * as P from "../../styled/PublicComponents.styled"
-import { FieldValues, useForm } from "react-hook-form"
-import { Button, TextField } from "@mui/material"
-import { signUpFileds } from "../../utils/fileds"
-import { SIGNIN_ROUTE } from "../../const"
-import { FC, useContext } from "react"
-import { IFileds } from "../../types"
-import { Context } from "../.."
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import * as P from '../../styled/PublicComponents.styled'
+import { type FieldValues, useForm } from 'react-hook-form'
+import { Button, TextField } from '@mui/material'
+import { signUpFileds } from '../../utils/fileds'
+import { SIGNIN_ROUTE } from '../../const'
+import { type FC, useContext } from 'react'
+import { type IFileds } from '../../types'
+import { Context } from '../..'
 
 interface IFirebaseContext {
   firebase: any
@@ -29,21 +29,21 @@ const SignUp: FC = () => {
 
     createUserWithEmailAndPassword(auth, email, password)
       .then(() => {
-        window.location.search = `?displayName=${displayName}`
+        window.location.search = `?displayName=${String(displayName)}`
       })
       .catch((err: any) => {
-        let jsonError = JSON.stringify(err)
+        const jsonError = JSON.stringify(err)
         const code = JSON.parse(jsonError).code
 
-        if (code.includes("requests")) {
-          setError("email", {
-            message: "Too many login attempts"
+        if (code.includes('requests') != null) {
+          setError('email', {
+            message: 'Too many login attempts'
           })
         }
 
-        if (code.includes("use")) {
-          setError("email", {
-            message: "Email already in use"
+        if (code.includes('use') != null) {
+          setError('email', {
+            message: 'Email already in use'
           })
         }
       })

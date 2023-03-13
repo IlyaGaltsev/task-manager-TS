@@ -1,14 +1,14 @@
-import React, { createContext } from "react"
-import ReactDOM from "react-dom/client"
-import { BrowserRouter as Router } from "react-router-dom"
-import { App } from "./App"
-import firebase from "firebase/compat/app"
-import { config } from "./firebase-config"
-import "./index.scss"
-import "firebase/compat/firestore"
-import "firebase/compat/auth"
+import React, { createContext } from 'react'
+import ReactDOM from 'react-dom/client'
+import { BrowserRouter as Router } from 'react-router-dom'
+import { App } from './App'
+import firebase from 'firebase/compat/app'
+import { config } from './firebase-config'
+import './index.scss'
+import 'firebase/compat/firestore'
+import 'firebase/compat/auth'
 
-const root = ReactDOM.createRoot(document.getElementById("root") as HTMLElement)
+const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement)
 
 firebase.initializeApp(config)
 const auth = firebase.auth()

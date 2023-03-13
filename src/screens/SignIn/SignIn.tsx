@@ -1,12 +1,12 @@
-import { signInWithEmailAndPassword } from "firebase/auth"
-import * as P from "../../styled/PublicComponents.styled"
-import { FieldValues, useForm } from "react-hook-form"
-import { Button, TextField } from "@mui/material"
-import { signInFileds } from "../../utils/fileds"
-import { SIGNUP_ROUTE } from "../../const"
-import { IFileds } from "../../types"
-import { useContext } from "react"
-import { Context } from "../.."
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import * as P from '../../styled/PublicComponents.styled'
+import { type FieldValues, useForm } from 'react-hook-form'
+import { Button, TextField } from '@mui/material'
+import { signInFileds } from '../../utils/fileds'
+import { SIGNUP_ROUTE } from '../../const'
+import { type IFileds } from '../../types'
+import { useContext } from 'react'
+import { Context } from '../..'
 
 const SignIn: React.FC = () => {
   const { auth } = useContext(Context)
@@ -17,26 +17,26 @@ const SignIn: React.FC = () => {
     handleSubmit
   } = useForm()
 
-  const signIn = ({email, password}: FieldValues) => {
+  const signIn = ({ email, password }: FieldValues) => {
     signInWithEmailAndPassword(auth, email, password).catch(err => {
-      let jsonError = JSON.stringify(err)
+      const jsonError = JSON.stringify(err)
       const code = JSON.parse(jsonError).code
 
-      if (code.includes("password")) {
-        setError("password", {
-          message: "Incorrect password"
+      if (code.includes('password') != null) {
+        setError('password', {
+          message: 'Incorrect password'
         })
       }
 
-      if (code.includes("requests")) {
-        setError("email", {
-          message: "Too many login attempts"
+      if (code.includes('requests') != null) {
+        setError('email', {
+          message: 'Too many login attempts'
         })
       }
 
-      if (code.includes("found")) {
-        setError("email", {
-          message: "Not found this user"
+      if (code.includes('found') != null) {
+        setError('email', {
+          message: 'Not found this user'
         })
       }
     })
@@ -68,7 +68,7 @@ const SignIn: React.FC = () => {
         Sign In
       </Button>
       <P.SubTitle>
-        Don't have an account?{" "}
+       {'Don`t have an account? '}
         <P.RouteLink to={SIGNUP_ROUTE}>Create account</P.RouteLink>
       </P.SubTitle>
     </P.Form>
