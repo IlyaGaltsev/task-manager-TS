@@ -17,8 +17,8 @@ const SignIn: React.FC = () => {
     handleSubmit
   } = useForm()
 
-  const signIn = (data: FieldValues) => {
-    signInWithEmailAndPassword(auth, data.email, data.password).catch(err => {
+  const signIn = ({email, password}: FieldValues) => {
+    signInWithEmailAndPassword(auth, email, password).catch(err => {
       let jsonError = JSON.stringify(err)
       const code = JSON.parse(jsonError).code
 

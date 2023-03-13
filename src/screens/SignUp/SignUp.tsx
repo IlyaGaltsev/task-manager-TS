@@ -4,8 +4,8 @@ import { FieldValues, useForm } from "react-hook-form"
 import { Button, TextField } from "@mui/material"
 import { signUpFileds } from "../../utils/fileds"
 import { SIGNIN_ROUTE } from "../../const"
+import { FC, useContext } from "react"
 import { IFileds } from "../../types"
-import { useContext } from "react"
 import { Context } from "../.."
 
 interface IFirebaseContext {
@@ -14,7 +14,7 @@ interface IFirebaseContext {
   firestore: any
 }
 
-const SignUp: React.FC = () => {
+const SignUp: FC = () => {
   const { auth } = useContext<IFirebaseContext>(Context)
 
   const {
@@ -31,15 +31,21 @@ const SignUp: React.FC = () => {
       .then(() => {
         window.location.search = `?displayName=${displayName}`
       })
-      .catch((error: any) => {
-        let errorMessage = error.message
+      .catch((err: any) => {
+        let jsonError = JSON.stringify(err)
+        const code = JSON.parse(jsonError).code
 
-        if (errorMessage === "auth/weak-password") {
-          alert("The password is too weak.")
-        } else {
-          alert(errorMessage)
+        if (code.includes("requests")) {
+          setError("email", {
+            message: "Too many login attempts"
+          })
         }
-        console.log(error)
+
+        if (code.includes("use")) {
+          setError("email", {
+            message: "Email already in use"
+          })
+        }
       })
   }
 
