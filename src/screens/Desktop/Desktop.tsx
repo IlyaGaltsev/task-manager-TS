@@ -1,7 +1,7 @@
+import { FirebaseContext } from '../../context/FirebaseContext'
 import { AlertDialog } from '../../components/AlertDialog'
 import { styled } from '@mui/material/styles'
 import { useContext, useState } from 'react'
-import { Context } from '../..'
 import {
   ListItemAvatar,
   ListSubheader,
@@ -85,11 +85,6 @@ const StyledFab = styled(Fab)({
   right: 0,
   margin: '0 auto'
 })
-interface IFirebaseContext {
-  firebase: any
-  auth: any
-  firestore: any
-}
 
 const Desktop = () => {
   const getParamsDisplayName = () => {
@@ -107,7 +102,7 @@ const Desktop = () => {
 
   const displayName = getParamsDisplayName()
 
-  const { firebase } = useContext<IFirebaseContext>(Context)
+  const { firebase } = useContext(FirebaseContext)
   const [open, setOpen] = useState(Boolean(displayName))
 
   const handleClickOpen = () => {

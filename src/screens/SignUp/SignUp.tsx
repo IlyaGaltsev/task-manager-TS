@@ -1,21 +1,15 @@
+import { FirebaseContext } from '../../context/FirebaseContext'
 import { createUserWithEmailAndPassword } from 'firebase/auth'
-import * as P from '../../styled/PublicComponents.styled'
+import type { IFirebaseContext, IFileds } from '../../types'
 import { type FieldValues, useForm } from 'react-hook-form'
+import * as P from '../../styled/PublicComponents.styled'
 import { Button, TextField } from '@mui/material'
 import { signUpFileds } from '../../utils/fileds'
 import { SIGNIN_ROUTE } from '../../const'
 import { type FC, useContext } from 'react'
-import { type IFileds } from '../../types'
-import { Context } from '../..'
-
-interface IFirebaseContext {
-  firebase: any
-  auth: any
-  firestore: any
-}
 
 const SignUp: FC = () => {
-  const { auth } = useContext<IFirebaseContext>(Context)
+  const { auth } = useContext<IFirebaseContext>(FirebaseContext)
 
   const {
     register,

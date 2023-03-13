@@ -11,6 +11,13 @@ export interface ITodoItem {
   title: string
   flag: boolean
 }
+
+export interface IFirebaseContext {
+  firebase: any
+  auth: any
+  firestore: any
+}
+
 export interface ITodoItemCard extends ITodoItem {
   key: number
   deleteItem: (id: number) => void
