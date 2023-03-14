@@ -1,17 +1,19 @@
-import Button from '@mui/material/Button'
-import Dialog from '@mui/material/Dialog'
-import DialogActions from '@mui/material/DialogActions'
-import DialogContent from '@mui/material/DialogContent'
-import DialogContentText from '@mui/material/DialogContentText'
-import Slide from '@mui/material/Slide'
 import { type TransitionProps } from '@mui/material/transitions'
-import { Alert, Avatar } from '@mui/material'
+import { FirebaseContext } from 'src/context/FirebaseContext'
 import { deepOrange } from '@mui/material/colors'
-import * as S from './AlertDialog.styled'
-// import * as P from '../../styled/PublicComponents.styled'
 import { updateProfile } from 'firebase/auth'
-import { FirebaseContext } from '../../context/FirebaseContext'
 import React, { useContext } from 'react'
+import * as S from './AlertDialog.styled'
+import {
+  DialogContentText,
+  DialogContent,
+  DialogActions,
+  Dialog,
+  Button,
+  Avatar,
+  Alert,
+  Slide
+} from '@mui/material'
 
 const Transition = React.forwardRef(function Transition (
   props: TransitionProps & {

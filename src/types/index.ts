@@ -23,6 +23,7 @@ export interface ITodoItemCard extends ITodoItem {
   deleteItem: (id: number) => void
   toggleItem: (id: number) => void
 }
+
 export interface TypeInputValues {
   todoItems: ITodoItem[]
   setTodoItems: Dispatch<SetStateAction<ITodoItem[]>>
