@@ -1,5 +1,5 @@
 import { FirebaseContext } from './context/FirebaseContext'
-import { BrowserRouter as Router } from 'react-router-dom'
+import { HashRouter as Router } from 'react-router-dom'
 import firebase from 'firebase/compat/app'
 import { config } from './firebase-config'
 import ReactDOM from 'react-dom/client'
